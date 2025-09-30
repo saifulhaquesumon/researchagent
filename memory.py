@@ -1,11 +1,15 @@
 from langchain_community.vectorstores import Chroma
-from langchain_openai import OpenAIEmbeddings
+# Updated import for HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.memory import ConversationBufferMemory
 
 class LongTermMemory:
     def __init__(self, db_path="./chroma_db"):
         self.db_path = db_path
-        self.embedding_function = OpenAIEmbeddings()
+        # This is the key change: Use the HuggingFaceEmbeddings wrapper
+        self.embedding_function = HuggingFaceEmbeddings(
+            model_name="sentence-transformers/all-MiniLM-L6-v2"
+        )
         self.vectorstore = Chroma(
             persist_directory=self.db_path,
             embedding_function=self.embedding_function
@@ -17,6 +21,7 @@ class LongTermMemory:
         """
         if chunks:
             self.vectorstore.add_documents(chunks)
+            # Persisting is handled by Chroma automatically on add, but explicit is fine
             self.vectorstore.persist()
 
     def get_retriever(self):

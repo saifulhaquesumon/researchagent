@@ -55,6 +55,8 @@ def main():
             short_term_memory.get_memory().chat_memory.add_ai_message(response)
 
 if __name__ == "__main__":
+    from dotenv import load_dotenv
+    load_dotenv()
     # To run this, you need to set your OpenAI API key
     # For example: export OPENAI_API_KEY="your_key_here"
     if os.getenv("OPENAI_API_KEY") is None:

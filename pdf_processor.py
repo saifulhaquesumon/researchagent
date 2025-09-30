@@ -17,7 +17,8 @@ def process_pdf(file_path):
 
     loader = PyPDFLoader(file_path)
     documents = loader.load()
-
+    print(f"Loaded {len(documents)} pages from {file_path}")
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     chunks = text_splitter.split_documents(documents)
+    print(f"Split into {len(chunks)} chunks.")
     return chunks
